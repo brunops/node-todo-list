@@ -17,6 +17,18 @@ var server = http.createServer(function (req, res) {
         res.end();
       }
       break;
+    case 'POST':
+      var item = '';
+      req.setEncoding('utf8');
+      req.on('data', function (chunk) {
+        item += chunk;
+      });
+
+      req.on('end', function () {
+        list.push(item);
+        res.end('OK\n');
+      });
+      break;
   }
 });
 
