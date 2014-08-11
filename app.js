@@ -1,9 +1,6 @@
 var http = require('http');
 
-var list = [
-  'item 1',
-  'item 2'
-];
+var list = [];
 
 var server = http.createServer(function (req, res) {
   switch (req.method) {
