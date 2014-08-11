@@ -6,15 +6,17 @@ var list = [
 ];
 
 var server = http.createServer(function (req, res) {
-  if (req.method === 'GET') {
-    if (req.url === '/') {
-      var i;
-      
-      for (i = 0; i < list.length; ++i) {
-        res.write(i + ') ' + list[i] + '\n');
+  switch (req.method) {
+    case 'GET':
+      if (req.url === '/') {
+        var i;
+        
+        for (i = 0; i < list.length; ++i) {
+          res.write(i + ') ' + list[i] + '\n');
+        }
+        res.end();
       }
-      res.end();
-    }
+      break;
   }
 });
 
