@@ -1,4 +1,5 @@
-var http = require('http');
+var http = require('http'),
+    url = require('url');
 
 var list = [];
 
@@ -25,6 +26,23 @@ var server = http.createServer(function (req, res) {
         list.push(item);
         res.end('OK\n');
       });
+      break;
+    case 'DELETE':
+      var path = url.parse(req.url).pathname,
+          id = parseInt(path.slice(1), 10);
+
+      if (isNaN(id)) {
+        res.statusCode = 404;
+        res.end('Invalid item id.');
+      }
+      else if (!list[id]) {
+        res.statusCode = 404;
+        res.end('Item not found.');
+      }
+      else {
+        list.splice(id, 1);
+        res.end('OK\n');
+      }
       break;
   }
 });
