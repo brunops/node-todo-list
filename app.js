@@ -32,7 +32,7 @@ var server = http.createServer(function (req, res) {
           id = parseInt(path.slice(1), 10);
 
       if (isNaN(id)) {
-        res.statusCode = 404;
+        res.statusCode = 400;
         res.end('Invalid item id.');
       }
       else if (!list[id]) {
@@ -43,6 +43,30 @@ var server = http.createServer(function (req, res) {
         list.splice(id, 1);
         res.end('OK\n');
       }
+      break;
+
+    case 'PUT':
+      var body = '';
+      req.on('data', function (chunk) {
+        body += chunk.toString();
+      });
+      req.on('end', function () {
+        var path = url.parse(req.url).pathname,
+            id = parseInt(path.slice(1), 10);
+
+        if (isNaN(id)) {
+          res.statusCode = 400;
+          res.end('Invalid item id.');
+        }
+        else if (!list[id]) {
+          res.statusCode = 404;
+          res.end('Item not found.');
+        }
+        else {
+          list[id] = body;
+          res.end('OK\n');
+        }
+      });
       break;
   }
 });
